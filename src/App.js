@@ -1,31 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
-import { useDispatch, useSelector } from 'react-redux';
-import MyComponent from './components/MyComponent';
-import { increaseCounter, decreaseCounter } from './redux/action/counterAction';
-const App = () => {
-  const count = useSelector(state => state.counter.count);
-  const dispatch = useDispatch();
-
-  return (
-    <div>
-      Hello World from App
-    <MyComponent></MyComponent>
-
-    </div>
-
-    // <div classNam e="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <div>Count = {count}</div>
-    //     <button onClick={() => dispatch(increaseCounter())}>Increase</button>
-    //     <button onClick={() => dispatch(decreaseCounter())}>Decrease</button>
-    //   </header>
-    // </div>
-  );
+import logo from "./logo.svg";
+import "./App.css";
+import { useDispatch, useSelector } from "react-redux";
+import MyComponent from "./components/MyComponent";
+import React from "react";
+import { increaseCounter, decreaseCounter } from "./redux/action/counterAction";
+class App extends React.Component {
+  render(){
+    return (
+      <div>
+        Hello World from App
+        <MyComponent></MyComponent>
+      </div>
+    );
+  }
 }
+
+// const App = () => {
+//   const count = useSelector(state => state.counter.count);
+//   const dispatch = useDispatch();
+
+//   return (
+
+//     <div classNam e="App">
+//       <header className="App-header">
+//         <img src={logo} className="App-logo" alt="logo" />
+//         <p>
+//           Edit <code>src/App.js</code> and save to reload.
+//         </p>
+//         <div>Count = {count}</div>
+//         <button onClick={() => dispatch(increaseCounter())}>Increase</button>
+//         <button onClick={() => dispatch(decreaseCounter())}>Decrease</button>
+//       </header>
+//     </div>
+//   );
+// }
 
 export default App;
