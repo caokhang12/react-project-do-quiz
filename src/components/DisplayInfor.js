@@ -1,18 +1,22 @@
 import React from "react";
 
 class DisplayInfor extends React.Component {
-    state ={
-        showList : true
-    }
+  state = {
+    showList: true,
+  };
 
   render() {
     const { listUser } = this.props;
     return (
       <div>
         <span>
-          <button onClick={() => this.setState({ showList: !this.state.showList })}>Show user infor</button>
+          <button
+            onClick={() => this.setState({ showList: !this.state.showList })}
+          >
+            {this.state.showList ? "Hide List" : "Show List"}
+          </button>
         </span>
-        {this.state.showList &&
+        {this.state.showList && (
           <div>
             {listUser.map((user) => {
               return (
@@ -24,7 +28,7 @@ class DisplayInfor extends React.Component {
               );
             })}
           </div>
-        }
+        )}
       </div>
     );
   }
