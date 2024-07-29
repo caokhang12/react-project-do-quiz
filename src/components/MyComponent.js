@@ -17,6 +17,19 @@ class MyComponent extends React.Component{
             age : Math.floor((Math.random()*100) + 1)
         })
     }
+
+    handleOnChange = (event) => {
+        this.setState({
+            name : event.target.value
+        })
+        console.log(event.target.value)
+    }
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(this.state)
+
+    }
     //JSX
     render(){
         return(
@@ -25,6 +38,11 @@ class MyComponent extends React.Component{
                 <p>Name: {this.state.name} Age: {this.state.age}</p>
                 <button onClick={(event) => {this.handleClick(event)}}>Click button</button>
                 <button onMouseOver={this.handleHover}>Hover button</button>
+                <form onSubmit={(event) => {this.handleSubmit(event)}}>
+                    <input type="text" onChange={(event) => {this.handleOnChange(event)}}/>
+                    <button>Submit</button>
+                </form>
+
 
             </div>
         );
