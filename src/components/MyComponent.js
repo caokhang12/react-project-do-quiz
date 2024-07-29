@@ -7,19 +7,23 @@ class MyComponent extends React.Component{
     }
 
     handleHover = (event) => {
-        console.log('My name is hover')
+        //console.log(`My age is hover ${this.state.age}`)
     }
 
     handleClick = (event) => {
-        console.log('My name is')
+        console.log('My name is ' + this.state.name)
+        this.setState({
+            name : 'Alex',
+            age : Math.floor((Math.random()*100) + 1)
+        })
     }
     //JSX
     render(){
         return(
             <div>
                 <h1>Hello World From MyComponent</h1>
-                <p>name = {this.state.name}</p>
-                <button onClick={this.handleClick}>Click button</button>
+                <p>Name: {this.state.name} Age: {this.state.age}</p>
+                <button onClick={(event) => {this.handleClick(event)}}>Click button</button>
                 <button onMouseOver={this.handleHover}>Hover button</button>
 
             </div>
