@@ -17,13 +17,21 @@ class MyComponent extends React.Component {
       listUser: newListUser,
     });
   };
+
+  handleDeleteUser = (id) => {
+    let newListUser = [...this.state.listUser];
+    newListUser = newListUser.filter((user) => user.id !== id);
+    this.setState({
+      listUser: newListUser,
+    });
+  };
   //JSX
   render() {
     return (
       <>
         <AddUserInfor AddNewUser={this.handleChangeAddNewUser} />
         <br />
-        <DisplayInfor listUser={this.state.listUser} />
+        <DisplayInfor DeleteUser={this.handleDeleteUser} listUser={this.state.listUser} />
       </>
     );
   }

@@ -12,6 +12,7 @@ class DisplayInfor extends React.Component {
     return (
       <div className="display-infor">
         <img src={logo} className="App-logo" alt="logo" />
+        <br/>
         <button
           onClick={() => this.setState({ showList: !this.state.showList })}
         >
@@ -24,6 +25,7 @@ class DisplayInfor extends React.Component {
                 <div className={user.age < 18 ? "green" : "red"} key={user.id}>
                   <p>Name: {user.name}</p>
                   <p>Age: {user.age}</p>
+                  <button onClick={()=> this.props.DeleteUser(user.id)}>Delete</button>
                   <hr />
                 </div>
               );
