@@ -29,7 +29,7 @@ class UserInfor extends React.Component {
   };
   render() {
     return (
-      <div>
+      <>
         <h1 style={{ color: "cyan", backgroundColor: "black" }}>Hello World From MyComponent</h1>
         <p>
           Name: {this.state.name} Age: {this.state.age}
@@ -58,7 +58,7 @@ class UserInfor extends React.Component {
           />
           <button>Submit</button>
         </form>
-      </div>
+      </>
     );
   }
 }

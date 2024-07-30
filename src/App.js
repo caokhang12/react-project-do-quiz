@@ -7,7 +7,7 @@ import { increaseCounter, decreaseCounter } from "./redux/action/counterAction";
 class App extends React.Component {
   render() {
     return (
-      <div>
+      <div className="app-container">
         Hello World from App
         <MyComponent></MyComponent>
       </div>

@@ -14,17 +14,17 @@ class MyComponent extends React.Component {
   handleChangeAddNewUser = (newUser) => {
     let newListUser = [newUser, ...this.state.listUser];
     this.setState({
-      listUser:newListUser
-    })
+      listUser: newListUser,
+    });
   };
   //JSX
   render() {
     return (
-      <div>
+      <>
         <AddUserInfor AddNewUser={this.handleChangeAddNewUser} />
         <br />
         <DisplayInfor listUser={this.state.listUser} />
-      </div>
+      </>
     );
   }
 }
