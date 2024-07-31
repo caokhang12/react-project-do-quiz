@@ -5,7 +5,20 @@ import logo from "./../logo.svg";
 class DisplayInfor extends React.Component {
   state = {
     showList: true,
-  };
+  }; 
+
+
+  componentDidMount() {
+      console.log("Mounted");
+  }
+  componentDidUpdate(prevProps, prevState) {
+      console.log("Update",this.props,prevProps);
+      if(this.props.listUser !== prevProps.listUser){
+        if(this.props.listUser.length === 0){
+          alert("List User is empty");
+        }
+      }
+  }
 
   render() {
     const { listUser } = this.props;
