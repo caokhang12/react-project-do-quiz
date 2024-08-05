@@ -66,14 +66,16 @@ body {
         font-size: 25px;
       }
       .homepage-button {
-        height: 50px;
-        padding: 0px 20px;
-        border-radius: 5px;
-        border: 1px solid #535353;
-        background: #535353;
-        color: white;
-        &:hover {
-          background: black;
+        button {
+          height: 50px;
+          padding: 0px 20px;
+          border-radius: 5px;
+          border: 1px solid #535353;
+          background: #535353;
+          color: white;
+          &:hover {
+            background: black;
+          }
         }
       }
     }
