@@ -7,12 +7,42 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+@media (min-width: 1400px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl,
+  .container-xxl {
+    max-width: 1530px !important;
+  }
+}
 
 .app-container {
   .header-container {
-    .navbar-nav {
+    .btn-login {
+      height: 40px;
+      margin-right: 15px;
+      border-radius: 5px;
+      padding: 0px 15px;
+      border: 1px solid #535353;
+    }
+    .btn-signup {
+      height: 40px;
+      margin-right: 15px;
+      border-radius: 5px;
+      padding: 0px 15px;
+      border: 1px solid #303030;
+      background: #303030;
+      color: white;
+      &:hover {
+        background: black;
+      }
+    }
+    .navbar {
+      margin-top: 10px;
       z-index: 10;
-      opacity: 0.6;
+      background-color: rgba(0, 0, 0, 0) !important;
       .nav-link {
         &.active {
           color: green;
@@ -20,10 +50,37 @@ body {
       }
     }
   }
+  .homepage-container {
+    .homepage-content {
+      position: relative;
+      padding: 150px;
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      .homepage-title {
+        font-size: 45px;
+        font-weight: 600;
+      }
+      .homepage-description {
+        font-size: 25px;
+      }
+      .homepage-button {
+        height: 50px;
+        padding: 0px 20px;
+        border-radius: 5px;
+        border: 1px solid #535353;
+        background: #535353;
+        color: white;
+        &:hover {
+          background: black;
+        }
+      }
+    }
+  }
 }
 
-
-video{
+video {
   position: fixed;
   bottom: 0;
   width: 100vw;
