@@ -9,6 +9,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Admin from "./components/Admin/Admin";
 import User from "./components/User/User";
 import HomePage from "./components/Home/HomePage";
+import ManageUser from "./components/Admin/Content/ManageUser.js";
+import Dashboard from "./components/Admin/Content/Dashboard";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -20,8 +22,10 @@ root.render(
             <Route index element={<HomePage />} />
             <Route path="/users" element={<User />} />
           </Route>
-            <Route path="/admins" element={<Admin />} />
-
+          <Route path="/admins" element={<Admin />}>
+            <Route path="manage-users" element={<ManageUser />} />
+            <Route path="dashboard" element={<Dashboard />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </React.StrictMode>

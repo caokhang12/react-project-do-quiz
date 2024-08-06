@@ -7,15 +7,13 @@ import {
   SidebarFooter,
   SidebarContent,
 } from "react-pro-sidebar";
-import {
-  FaGem,
-  FaGithub,
-} from "react-icons/fa";
+import { FaGem, FaGithub } from "react-icons/fa";
 import { DiReact } from "react-icons/di";
 import { MdDashboard } from "react-icons/md";
 
 import sidebarBg from "../../assets/bg2.jpg";
 import "react-pro-sidebar/dist/css/styles.css";
+import { Link } from "react-router-dom";
 const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
   return (
     <ProSidebar
@@ -36,7 +34,6 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
             overflow: "hidden",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
-            marginRight: "10px",
           }}
         >
           <DiReact size={"3em"} color="00bfff" />
@@ -46,15 +43,17 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
 
       <SidebarContent>
         <Menu iconShape="circle">
-          <MenuItem icon={<MdDashboard />}>Dashboard</MenuItem>
-          {/* <MenuItem icon={<FaGem />}>components</MenuItem> */}
+          <MenuItem icon={<MdDashboard />}>
+            Dashboard
+            <Link to="/admins/dashboard" />
+          </MenuItem>
         </Menu>
         <Menu iconShape="circle">
-          <SubMenu
-            icon={<FaGem />}
-            title={"Tính năng"}
-          >
-            <MenuItem>Quản lý Người dùng</MenuItem>
+          <SubMenu icon={<FaGem />} title="Tính năng">
+            <MenuItem>
+              Quản lý Người dùng
+              <Link to="/admins/manage-users" />
+            </MenuItem>
             <MenuItem> Quản lý Bài Quiz</MenuItem>
             <MenuItem> Quản lý Câu Hỏi</MenuItem>
           </SubMenu>
