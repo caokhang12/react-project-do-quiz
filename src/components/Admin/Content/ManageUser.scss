@@ -1,0 +1,30 @@
+.modal-add-user {
+  .input-label {
+    align-items: center;
+    padding: 3px 0;
+    gap: 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    cursor: pointer;
+
+    .btn {
+      color: rgb(35, 34, 34);
+    }
+  }
+  .img-preview {
+    height: 160px;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c42121;
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+}
