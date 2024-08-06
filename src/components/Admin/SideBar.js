@@ -8,16 +8,15 @@ import {
   SidebarContent,
 } from "react-pro-sidebar";
 import {
-  FaTachometerAlt,
   FaGem,
-  FaList,
   FaGithub,
-  FaRegLaughWink,
-  FaHeart,
 } from "react-icons/fa";
+import { DiReact } from "react-icons/di";
+import { MdDashboard } from "react-icons/md";
+
 import sidebarBg from "../../assets/bg2.jpg";
 import "react-pro-sidebar/dist/css/styles.css";
-const SideBar = ({image, collapsed, toggled, handleToggleSidebar}) => {
+const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
   return (
     <ProSidebar
       image={sidebarBg}
@@ -37,38 +36,27 @@ const SideBar = ({image, collapsed, toggled, handleToggleSidebar}) => {
             overflow: "hidden",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
+            marginRight: "10px",
           }}
         >
+          <DiReact size={"3em"} color="00bfff" />
           ReactWeb
         </div>
       </SidebarHeader>
 
       <SidebarContent>
         <Menu iconShape="circle">
-          <MenuItem
-            icon={<FaTachometerAlt />}
-            suffix={<span className="badge red">New</span>}
-          >
-            dashboardddd
-          </MenuItem>
-          <MenuItem icon={<FaGem />}>components</MenuItem>
+          <MenuItem icon={<MdDashboard />}>Dashboard</MenuItem>
+          {/* <MenuItem icon={<FaGem />}>components</MenuItem> */}
         </Menu>
         <Menu iconShape="circle">
           <SubMenu
-            suffix={<span className="badge yellow">3</span>}
-            icon={<FaRegLaughWink />}
+            icon={<FaGem />}
+            title={"Tính năng"}
           >
-            <MenuItem> 1</MenuItem>
-            <MenuItem> 2</MenuItem>
-            <MenuItem> 3</MenuItem>
-          </SubMenu>
-          <SubMenu
-            prefix={<span className="badge gray">3</span>}
-            icon={<FaHeart />}
-          >
-            <MenuItem> 2</MenuItem>
-            <MenuItem> 3</MenuItem>
-            <MenuItem> 1</MenuItem>
+            <MenuItem>Quản lý Người dùng</MenuItem>
+            <MenuItem> Quản lý Bài Quiz</MenuItem>
+            <MenuItem> Quản lý Câu Hỏi</MenuItem>
           </SubMenu>
         </Menu>
       </SidebarContent>
@@ -81,7 +69,7 @@ const SideBar = ({image, collapsed, toggled, handleToggleSidebar}) => {
           }}
         >
           <a
-            href="https://github.com/azouaoui-med/react-pro-sidebar"
+            href="https://github.com/caokhang12/react-project-learn.git"
             target="_blank"
             className="sidebar-btn"
             rel="noopener noreferrer"
@@ -94,7 +82,7 @@ const SideBar = ({image, collapsed, toggled, handleToggleSidebar}) => {
                 overflow: "hidden",
               }}
             >
-              viewSource
+              ProjectLink
             </span>
           </a>
         </div>
