@@ -7,29 +7,47 @@ import Row from "react-bootstrap/Row";
 import Image from "react-bootstrap/Image";
 import { FiPlusCircle } from "react-icons/fi";
 import "./ManageUser.scss";
+import axios from "axios";
 
-const ModalAddUser = () => {
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+const ModalAddUser = ({ show,  setShow }) => {
+  const handleClose = () => {setShow(false)
+    setUsername("");
+    setPassword("");
+    setEmail("");
+    setRole("USER");
+    setImage("");
+    setPreview("");
+  };
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("USER");
   const [image, setImage] = useState("");
   const [preview, setPreview] = useState("");
-  const handleUpPic = (e) => {
+  const handleUpImg = (e) => {
     if (e.target && e.target.files && e.target.files[0]) {
       setImage(e.target.files[0]);
       setPreview(URL.createObjectURL(e.target.files[0]));
     }
   };
 
+  const handleSubmit = async () => {
+    const data = new FormData();
+    data.append("username", username);
+    data.append("password", password);
+    data.append("email", email);
+    data.append("role", role);
+    data.append("userImage", image);
+
+    let res = await axios.post("http://localhost:8081/api/v1/participant", data);
+    console.log(res);
+  };
+
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      {/* <Button variant="primary" onClick={handleShow}>
         Launch demo modal
-      </Button>
+      </Button> */}
 
       <Modal
         show={show}
@@ -49,7 +67,7 @@ const ModalAddUser = () => {
                 <Form.Label>Tên tài khoản</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Enter email"
+                  placeholder=" Nhập tên tài khoản"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
@@ -59,7 +77,7 @@ const ModalAddUser = () => {
                 <Form.Label>Mật khẩu</Form.Label>
                 <Form.Control
                   type="password"
-                  placeholder="Password"
+                  placeholder="Nhập mật khẩu"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -101,8 +119,7 @@ const ModalAddUser = () => {
                 type="file"
                 hidden
                 id="formFile"
-                onChange={(e) => handleUpPic(e)}
-                value={image}
+                onChange={(e) => handleUpImg(e)}
               />
             </Form.Group>
             {preview ? (
@@ -116,7 +133,7 @@ const ModalAddUser = () => {
           <Button variant="secondary" onClick={handleClose}>
             Hủy
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleSubmit}>
             Lưu
           </Button>
         </Modal.Footer>
