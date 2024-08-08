@@ -1,6 +1,6 @@
 import ModalAddUser from "./ModalAddUser";
 import { useState } from "react";
-
+import TableUser from "./TableUser";
 
 const ManageUser = () => {
   const [show, setShow] = useState(false);
@@ -11,10 +11,14 @@ const ManageUser = () => {
       <div className="manage-user-title">ManageUser</div>
       <div className="manage-user-content">
         <div className="btn-add-user">
-          <button className="btn btn-outline-primary" onClick={handleShow}>Thêm người dùng</button>
+          <button className="btn btn-outline-primary" onClick={handleShow}>
+            Thêm người dùng
+          </button>
         </div>
-        <div className="manage-user-table">Table</div>
-</div>
+        <div className="manage-user-table">
+          <TableUser />
+        </div>
+      </div>
       <div className="manage-user"></div>
       <ModalAddUser show={show} setShow={setShow} />
     </div>

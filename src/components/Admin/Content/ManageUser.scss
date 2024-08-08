@@ -1,17 +1,29 @@
-.manage-user-container{
+.admin-content {
+  width: 100%;
+  .admin-header {
+  }
+  .admin-main {
+  }
+
+.manage-user-container {
   padding: 10px;
-  .manage-user-title{}
-  .manage-user-content{
-    .btn-add-user{
-      margin: 10px 0;
-      button{
-        padding: 10px;
+  .manage-user-title {
+    font-weight: 600;
+    font-size: 20px;
+  }
+ 
+    .manage-user-content {
+      .btn-add-user {
+        margin: 10px 0;
+        button {
+          padding: 5px;
+        }
+      }
+      .manage-user-table {
       }
     }
-    .manage-user-table{}
   }
 }
-
 
 .modal-add-user {
   .input-label {
