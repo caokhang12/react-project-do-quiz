@@ -8,7 +8,7 @@ import Image from "react-bootstrap/Image";
 import { FiPlusCircle } from "react-icons/fi";
 import "./ManageUser.scss";
 import { toast } from "react-toastify";
-import axios from "axios";
+import { postNewUser } from "../../../services/apiService";
 
 const ModalAddUser = ({ show, setShow }) => {
   const handleClose = () => {
@@ -46,27 +46,20 @@ const ModalAddUser = ({ show, setShow }) => {
     const isEmailValid = validateEmail(email);
     if (!isEmailValid) {
       toast.error("Email không đúng định dạng");
+      return;
     }
     if (!password) {
       toast.error("Vui lòng nhập mật khẩu");
+      return;
     }
-    // Gửi data
-    const data = new FormData();
-    data.append("username", username);
-    data.append("password", password);
-    data.append("email", email);
-    data.append("role", role);
-    data.append("userImage", image);
-
-    let res = await axios.post(
-      "http://localhost:8081/api/v1/participant",
-      data
-    );
-    if (res.data && res.data.EC === 0) {
-      toast.success(res.data.EM);
+    //Gửi data
+    let data = await postNewUser(username, password, email, role, image);
+    if (data && data.EC === 0) {
+      toast.success(data.EM);
+      handleClose();
     }
-    if (res.data && res.data.EC !== 0) {
-      toast.error(res.data.EM);
+    if (data && data.EC !== 0) {
+      toast.error(data.EM);
     }
   };
 
