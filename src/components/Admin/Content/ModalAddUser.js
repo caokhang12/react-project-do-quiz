@@ -7,10 +7,12 @@ import Row from "react-bootstrap/Row";
 import Image from "react-bootstrap/Image";
 import { FiPlusCircle } from "react-icons/fi";
 import "./ManageUser.scss";
+import { toast } from "react-toastify";
 import axios from "axios";
 
-const ModalAddUser = ({ show,  setShow }) => {
-  const handleClose = () => {setShow(false)
+const ModalAddUser = ({ show, setShow }) => {
+  const handleClose = () => {
+    setShow(false);
     setUsername("");
     setPassword("");
     setEmail("");
@@ -31,7 +33,24 @@ const ModalAddUser = ({ show,  setShow }) => {
     }
   };
 
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
   const handleSubmit = async () => {
+    // Validate
+    const isEmailValid = validateEmail(email);
+    if (!isEmailValid) {
+      toast.error("Email không đúng định dạng");
+    }
+    if (!password) {
+      toast.error("Vui lòng nhập mật khẩu");
+    }
+    // Gửi data
     const data = new FormData();
     data.append("username", username);
     data.append("password", password);
@@ -39,8 +58,16 @@ const ModalAddUser = ({ show,  setShow }) => {
     data.append("role", role);
     data.append("userImage", image);
 
-    let res = await axios.post("http://localhost:8081/api/v1/participant", data);
-    console.log(res);
+    let res = await axios.post(
+      "http://localhost:8081/api/v1/participant",
+      data
+    );
+    if (res.data && res.data.EC === 0) {
+      toast.success(res.data.EM);
+    }
+    if (res.data && res.data.EC !== 0) {
+      toast.error(res.data.EM);
+    }
   };
 
   return (
@@ -64,12 +91,12 @@ const ModalAddUser = ({ show,  setShow }) => {
           <Form>
             <Row className="mb-3">
               <Form.Group as={Col}>
-                <Form.Label>Tên tài khoản</Form.Label>
+                <Form.Label>Email</Form.Label>
                 <Form.Control
-                  type="text"
-                  placeholder=" Nhập tên tài khoản"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  type="email"
+                  placeholder="Nhập email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Form.Group>
 
@@ -86,12 +113,12 @@ const ModalAddUser = ({ show,  setShow }) => {
 
             <Row className="mb-3">
               <Form.Group as={Col}>
-                <Form.Label>Email</Form.Label>
+                <Form.Label>Tên người dùng</Form.Label>
                 <Form.Control
-                  type="email"
-                  placeholder="Nhập email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  type="text"
+                  placeholder=" Nhập tên người dùng"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </Form.Group>
 
