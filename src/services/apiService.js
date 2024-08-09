@@ -17,7 +17,11 @@ const putUser = (id, username, role, image) => {
   data.append("userImage", image);
   return axios.put("api/v1/participant", data);
 };
+
+const deleteUser = (id) => {
+  return axios.delete('api/v1/participant', { data: { id } });
+}
 const getAllUsers = () => {
   return axios.get("api/v1/participant/all");
 };
-export { postNewUser, getAllUsers, putUser };
+export { postNewUser, getAllUsers, putUser, deleteUser };

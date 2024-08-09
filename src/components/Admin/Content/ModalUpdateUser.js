@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { putUser } from "../../../services/apiService";
 import _ from "lodash";
 
-const ModalUpdateUser = ({ show, setShow, fetchListUser, userUpdate, setUserUpdate }) => {
+const ModalUpdateUser = ({ show, setShow, fetchListUser, user, setUser }) => {
   const handleClose = () => {
     setShow(false);
     setUsername("");
@@ -20,7 +20,7 @@ const ModalUpdateUser = ({ show, setShow, fetchListUser, userUpdate, setUserUpda
     setRole("USER");
     setImage("");
     setPreview("");
-    setUserUpdate({});
+    setUser({});
   };
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -30,16 +30,16 @@ const ModalUpdateUser = ({ show, setShow, fetchListUser, userUpdate, setUserUpda
   const [preview, setPreview] = useState("");
 
   useEffect(() => {
-    if (!_.isEmpty(userUpdate)) {
-      setUsername(userUpdate.username);
+    if (!_.isEmpty(user)) {
+      setUsername(user.username);
       setPassword("");
-      setEmail(userUpdate.email);
-      setRole(userUpdate.role);
+      setEmail(user.email);
+      setRole(user.role);
       setImage("");
-      if(userUpdate.image)
-        setPreview(`data:image/jpeg;base64,${userUpdate.image}`);
+      if(user.image)
+        setPreview(`data:image/jpeg;base64,${user.image}`);
     }
-  }, [userUpdate]);
+  }, [user]);
   const handleUpImg = (e) => {
     if (e.target && e.target.files && e.target.files[0]) {
       setImage(e.target.files[0]);
@@ -64,7 +64,7 @@ const ModalUpdateUser = ({ show, setShow, fetchListUser, userUpdate, setUserUpda
     }
 
     //Gửi data
-    let data = await putUser(userUpdate.id, username, role, image);
+    let data = await putUser(user.id, username, role, image);
     if (data && data.EC === 0) {
       toast.success(data.EM);
       handleClose();
