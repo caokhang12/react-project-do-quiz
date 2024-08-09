@@ -1,4 +1,4 @@
-const TableUser = ({listUser}) => {
+const TableUser = ({listUser,handleBtnUpdate}) => {
  
   return (
     <table className="table table-hover table-bordered">
@@ -15,14 +15,14 @@ const TableUser = ({listUser}) => {
         {listUser &&
           listUser.length > 0 &&
           listUser.map((item, index) => (
-            <tr>
-              <td key={`table-user-${index}`}>{index + 1}</td>
+            <tr key={`table-user-${index}`}>
+              <td >{index + 1}</td>
               <td>{item.email}</td>
               <td>{item.username}</td>
               <td>{item.role}</td>
               <td>
                 <button className="btn btn-danger">Xóa</button>
-                <button className="btn btn-warning mx-2">Sửa</button>
+                <button className="btn btn-warning mx-2" onClick={()=>handleBtnUpdate(item)}>Sửa</button>
                 <button className="btn btn-primary">Chi tiết</button>
               </td>
             </tr>

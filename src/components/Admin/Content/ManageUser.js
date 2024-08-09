@@ -2,11 +2,14 @@ import ModalAddUser from "./ModalAddUser";
 import React, { useEffect, useState } from "react";
 import TableUser from "./TableUser";
 import { getAllUsers } from "../../../services/apiService";
+import ModalUpdateUser from "./ModalUpdateUser";
 
 const ManageUser = () => {
-  const [show, setShow] = useState(false);
-  const handleShow = () => setShow(true);
+  const [showModalAdd, setShowModalAdd] = useState(true);
+  const [showModalUpdate, setShowModalUpdate] = useState(false);
   const [listUser, setListUser] = useState([]);
+  const [userUpdate, setUserUpdate] = useState({});
+
   useEffect(() => {
     fetchListUser();
   }, []);
@@ -16,24 +19,35 @@ const ManageUser = () => {
       setListUser(res.DT);
     }
   };
+  const handleBtnUpdate = (userUpdate) => {
+    setShowModalUpdate(true);
+    setUserUpdate(userUpdate);
+  };
   return (
     <div className="manage-user-container">
       <div className="manage-user-title">ManageUser</div>
       <div className="manage-user-content">
         <div className="btn-add-user">
-          <button className="btn btn-outline-primary" onClick={handleShow}>
+          <button className="btn btn-outline-primary" onClick={()=>setShowModalAdd(true)}>
             Thêm người dùng
           </button>
         </div>
         <div className="manage-user-table">
-          <TableUser listUser={listUser} />
+          <TableUser listUser={listUser} 
+          handleBtnUpdate={handleBtnUpdate}/>
         </div>
       </div>
       <div className="manage-user"></div>
       <ModalAddUser
-        show={show}
-        setShow={setShow}
+        show={showModalAdd} 
+        setShow={setShowModalAdd}
         fetchListUser={fetchListUser}
+      />
+      <ModalUpdateUser
+        show={showModalUpdate} 
+        setShow={setShowModalUpdate}
+        fetchListUser={fetchListUser}
+        userUpdate={userUpdate}
       />
     </div>
   );
