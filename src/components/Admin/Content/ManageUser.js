@@ -5,7 +5,7 @@ import { getAllUsers } from "../../../services/apiService";
 import ModalUpdateUser from "./ModalUpdateUser";
 
 const ManageUser = () => {
-  const [showModalAdd, setShowModalAdd] = useState(true);
+  const [showModalAdd, setShowModalAdd] = useState(false);
   const [showModalUpdate, setShowModalUpdate] = useState(false);
   const [listUser, setListUser] = useState([]);
   const [userUpdate, setUserUpdate] = useState({});
@@ -48,6 +48,7 @@ const ManageUser = () => {
         setShow={setShowModalUpdate}
         fetchListUser={fetchListUser}
         userUpdate={userUpdate}
+        setUserUpdate={setUserUpdate}
       />
     </div>
   );

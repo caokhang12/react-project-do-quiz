@@ -8,10 +8,10 @@ import Image from "react-bootstrap/Image";
 import { FiPlusCircle } from "react-icons/fi";
 import "./ManageUser.scss";
 import { toast } from "react-toastify";
-import { postNewUser } from "../../../services/apiService";
+import { putUser } from "../../../services/apiService";
 import _ from "lodash";
 
-const ModalUpdateUser = ({ show, setShow, fetchListUser, userUpdate }) => {
+const ModalUpdateUser = ({ show, setShow, fetchListUser, userUpdate, setUserUpdate }) => {
   const handleClose = () => {
     setShow(false);
     setUsername("");
@@ -20,6 +20,7 @@ const ModalUpdateUser = ({ show, setShow, fetchListUser, userUpdate }) => {
     setRole("USER");
     setImage("");
     setPreview("");
+    setUserUpdate({});
   };
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -35,10 +36,8 @@ const ModalUpdateUser = ({ show, setShow, fetchListUser, userUpdate }) => {
       setEmail(userUpdate.email);
       setRole(userUpdate.role);
       setImage("");
-      {
-        userUpdate.image &&
-          setPreview(`data:image/jpeg;base64,${userUpdate.image}`);
-      }
+      if(userUpdate.image)
+        setPreview(`data:image/jpeg;base64,${userUpdate.image}`);
     }
   }, [userUpdate]);
   const handleUpImg = (e) => {
@@ -63,12 +62,9 @@ const ModalUpdateUser = ({ show, setShow, fetchListUser, userUpdate }) => {
       toast.error("Email không đúng định dạng");
       return;
     }
-    if (!password) {
-      toast.error("Vui lòng nhập mật khẩu");
-      return;
-    }
+
     //Gửi data
-    let data = await postNewUser(username, password, email, role, image);
+    let data = await putUser(userUpdate.id, username, role, image);
     if (data && data.EC === 0) {
       toast.success(data.EM);
       handleClose();
@@ -81,10 +77,6 @@ const ModalUpdateUser = ({ show, setShow, fetchListUser, userUpdate }) => {
 
   return (
     <>
-      {/* <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button> */}
-
       <Modal
         show={show}
         onHide={handleClose}
