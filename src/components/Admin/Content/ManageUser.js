@@ -1,12 +1,14 @@
 import ModalAddUser from "./ModalAddUser";
 import React, { useEffect, useState } from "react";
 import TableUser from "./TableUser";
-import { getAllUsers } from "../../../services/apiService";
+import { getAllUsersPaginate } from "../../../services/apiService";
 import ModalUpdateUser from "./ModalUpdateUser";
 import ModalViewUser from "./ModalViewUser";
 import ModalDelUser from "./ModalDelUser";
 
 const ManageUser = () => {
+  const LIMIT_USER = 3;
+  const [pageCount, setPageCount] = useState(0);
   const [showModalAdd, setShowModalAdd] = useState(false);
   const [showModalUpdate, setShowModalUpdate] = useState(false);
   const [showModalView, setShowModalView] = useState(false);
@@ -15,12 +17,13 @@ const ManageUser = () => {
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    fetchListUser();
+    fetchListUser(1);
   }, []);
-  const fetchListUser = async () => {
-    let res = await getAllUsers();
-    if (res && res.EC === 0) {
-      setListUser(res.DT);
+  const fetchListUser = async (page) => {
+    let res = await getAllUsersPaginate(page, LIMIT_USER);
+    if (res.EC === 0) {
+      setListUser(res.DT.users);
+      setPageCount(res.DT.totalPages);
     }
   };
   const handleBtnUpdate = (user) => {
@@ -49,6 +52,8 @@ const ManageUser = () => {
         </div>
         <div className="manage-user-table">
           <TableUser
+            pageCount={pageCount}
+            fetchListUser={fetchListUser}
             listUser={listUser}
             handleBtnUpdate={handleBtnUpdate}
             handleBtnView={handleBtnView}
