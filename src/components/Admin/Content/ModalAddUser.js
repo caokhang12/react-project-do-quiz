@@ -10,7 +10,7 @@ import "./ManageUser.scss";
 import { toast } from "react-toastify";
 import { postNewUser } from "../../../services/apiService";
 
-const ModalAddUser = ({ show, setShow, fetchListUser }) => {
+const ModalAddUser = ({ show, setShow, fetchListUser, setCurrentPage }) => {
   const handleClose = () => {
     setShow(false);
     setUsername("");
@@ -57,7 +57,8 @@ const ModalAddUser = ({ show, setShow, fetchListUser }) => {
     if (data && data.EC === 0) {
       toast.success(data.EM);
       handleClose();
-      fetchListUser();
+      await fetchListUser(1);
+      setCurrentPage(1);
     }
     if (data && data.EC !== 0) {
       toast.error(data.EM);

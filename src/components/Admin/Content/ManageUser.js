@@ -7,7 +7,8 @@ import ModalViewUser from "./ModalViewUser";
 import ModalDelUser from "./ModalDelUser";
 
 const ManageUser = () => {
-  const LIMIT_USER = 3;
+  const LIMIT_USER = 1;
+  const [currentPage, setCurrentPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
   const [showModalAdd, setShowModalAdd] = useState(false);
   const [showModalUpdate, setShowModalUpdate] = useState(false);
@@ -58,6 +59,8 @@ const ManageUser = () => {
             handleBtnUpdate={handleBtnUpdate}
             handleBtnView={handleBtnView}
             handleBtnDel={handleBtnDel}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         </div>
       </div>
@@ -66,6 +69,8 @@ const ManageUser = () => {
         show={showModalAdd}
         setShow={setShowModalAdd}
         fetchListUser={fetchListUser}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
       />
       <ModalUpdateUser
         show={showModalUpdate}
@@ -73,18 +78,24 @@ const ManageUser = () => {
         fetchListUser={fetchListUser}
         user={user}
         setUser={setUser}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
       />
       <ModalViewUser
         show={showModalView}
         setShow={setShowModalView}
         setUser={setUser}
         user={user}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
       />
       <ModalDelUser
         show={showModalDel}
         setShow={setShowModalDel}
         fetchListUser={fetchListUser}
         user={user}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
       />
     </div>
   );

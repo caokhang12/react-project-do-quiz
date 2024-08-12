@@ -3,7 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import { toast } from "react-toastify";
 import { deleteUser } from "../../../services/apiService";
 
-function ModalDelUser({ show, setShow, fetchListUser, user }) {
+function ModalDelUser({ show, setShow, fetchListUser, user, setCurrentPage }) {
   const handleClose = () => setShow(false);
   const handleConfirm = async () => {
     //Gửi data
@@ -11,7 +11,8 @@ function ModalDelUser({ show, setShow, fetchListUser, user }) {
     if (data && data.EC === 0) {
       toast.success(data.EM);
       handleClose();
-      fetchListUser();
+      await fetchListUser(1);
+      setCurrentPage(1);
     }
     if (data && data.EC !== 0) {
       toast.error(data.EM);
@@ -24,7 +25,8 @@ function ModalDelUser({ show, setShow, fetchListUser, user }) {
           <Modal.Title>Xác nhận xóa người dùng</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Bạn có chắc chắn muốn xóa người dùng <b>{user.email ? user.email : ""}</b>
+          Bạn có chắc chắn muốn xóa người dùng{" "}
+          <b>{user.email ? user.email : ""}</b>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

@@ -7,9 +7,12 @@ const TableUser = ({
   handleBtnDel,
   fetchListUser,
   pageCount,
+  currentPage,
+  setCurrentPage,
 }) => {
   const handlePageClick = (event) => {
     fetchListUser(+event.selected + 1);
+    setCurrentPage(+event.selected + 1);
     console.log(`User requested page number ${event.selected}`);
   };
   return (
@@ -29,7 +32,10 @@ const TableUser = ({
             listUser.length > 0 &&
             listUser.map((item, index) => (
               <tr key={`table-user-${index}`}>
-                <td>{index + 1}</td>
+                <td>
+                  {/* {index + 1} */}
+                  {item.id}
+                  </td>
                 <td>{item.email}</td>
                 <td>{item.username}</td>
                 <td>{item.role}</td>
@@ -83,6 +89,7 @@ const TableUser = ({
         containerClassName="pagination"
         activeClassName="active"
         renderOnZeroPageCount={null}
+        forcePage={currentPage - 1}
       />
       </div>
       

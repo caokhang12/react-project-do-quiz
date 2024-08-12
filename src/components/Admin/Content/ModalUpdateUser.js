@@ -11,7 +11,14 @@ import { toast } from "react-toastify";
 import { putUser } from "../../../services/apiService";
 import _ from "lodash";
 
-const ModalUpdateUser = ({ show, setShow, fetchListUser, user, setUser }) => {
+const ModalUpdateUser = ({
+  show,
+  setShow,
+  fetchListUser,
+  user,
+  setUser,
+  currentPage,
+}) => {
   const handleClose = () => {
     setShow(false);
     setUsername("");
@@ -36,8 +43,7 @@ const ModalUpdateUser = ({ show, setShow, fetchListUser, user, setUser }) => {
       setEmail(user.email);
       setRole(user.role);
       setImage("");
-      if(user.image)
-        setPreview(`data:image/jpeg;base64,${user.image}`);
+      if (user.image) setPreview(`data:image/jpeg;base64,${user.image}`);
     }
   }, [user]);
   const handleUpImg = (e) => {
@@ -68,7 +74,8 @@ const ModalUpdateUser = ({ show, setShow, fetchListUser, user, setUser }) => {
     if (data && data.EC === 0) {
       toast.success(data.EM);
       handleClose();
-      fetchListUser();
+      console.log(currentPage);
+      await fetchListUser(currentPage);
     }
     if (data && data.EC !== 0) {
       toast.error(data.EM);
