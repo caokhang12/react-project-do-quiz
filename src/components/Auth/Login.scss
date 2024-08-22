@@ -1,10 +1,12 @@
 .login-container {
   .header {
     text-align: right;
+    font-family: system-ui;
+    font-size: 15px;
     button {
-      font-size: small;
+      font-size: 13px;
       height: 30px;
-      margin: 15px;
+      margin: 10px 30px 20px 5px;
       border-radius: 2px;
       padding: 0px 10px;
       border: 1px solid #535353;

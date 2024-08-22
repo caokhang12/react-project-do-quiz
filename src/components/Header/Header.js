@@ -35,7 +35,7 @@ const Header = () => {
             <button className="btn-login" onClick={() => handleLogin()}>
               Log in
             </button>
-            <button className="btn-signup">Sign up</button>
+            <button className="btn-signup" onClick={() => navigate("/register")}>Sign up</button>
           </Nav>
         </Navbar.Collapse>
       </Container>

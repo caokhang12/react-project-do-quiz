@@ -10,7 +10,6 @@ import {
 import { FaGem, FaGithub } from "react-icons/fa";
 import { DiReact } from "react-icons/di";
 import { MdDashboard } from "react-icons/md";
-
 import sidebarBg from "../../assets/bg2.jpg";
 import "react-pro-sidebar/dist/css/styles.css";
 import { Link } from "react-router-dom";
