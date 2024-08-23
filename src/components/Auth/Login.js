@@ -19,7 +19,7 @@ const Login = () => {
       console.log(data);
       dispatch(doLogin(data));
       toast.success(data.EM);
-      //navigate("/");
+      navigate("/");
     }
     if (data && data.EC !== 0) {
       toast.error(data.EM);
