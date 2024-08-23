@@ -76,6 +76,25 @@
         color: white;
         margin: 20px 0 8px;
         width: 100%;
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+
+      .loading {
+        margin-right: 7px;
+        top: 2px;
+        animation: spin 1s infinite linear;
+      }
+
+      @keyframes spin {
+        from {
+          transform: scale(1) rotate(0deg);
+        }
+        to {
+          transform: scale(1) rotate(360deg);
+        }
       }
     }
   }

@@ -3,18 +3,28 @@ import { useNavigate } from "react-router-dom";
 import { postLogin } from "../../services/apiService";
 import "./Login.scss";
 import { toast } from "react-toastify";
+import { doLogin } from "../../redux/action/userAction";
+import { useDispatch } from "react-redux";
+import { VscLoading } from "react-icons/vsc";
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const handleLogin = async () => {
+    setLoading(true);
     let data = await postLogin(email, password);
     if (data && data.EC === 0) {
+      console.log(data);
+      dispatch(doLogin(data));
       toast.success(data.EM);
+      //navigate("/");
     }
     if (data && data.EC !== 0) {
       toast.error(data.EM);
     }
+    setLoading(false);
   };
   return (
     <div className="login-container">
@@ -48,7 +58,13 @@ const Login = () => {
         </div>
         <span className="forgot-password">Forgot password?</span>
         <div className="submit-button">
-          <button onClick={() => handleLogin()}>Login</button>
+          {loading ? (
+            <button disabled="true">
+              <VscLoading className="loading" /> <span>Loading...</span>
+            </button>
+          ) : (
+            <button onClick={() => handleLogin()}>Log in</button>
+          )}
         </div>
       </div>
     </div>

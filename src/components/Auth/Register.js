@@ -14,6 +14,7 @@ const Register = () => {
     console.log(data,email,password,username);
     if (data && data.EC === 0) {
       toast.success(data.EM);
+      navigate("/login");
     }
     if (data && data.EC !== 0) {
       toast.error(data.EM);
@@ -33,7 +34,7 @@ const Register = () => {
         <div className="register-content-right">
           <div className="header">
             <span>Already have an account yet?</span>
-            <button>Sign up</button>
+            <button onClick={() => navigate("/login")}>Login</button>
           </div>
           <div className="form-container">
             <div className="form-group">
