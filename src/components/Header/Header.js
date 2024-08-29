@@ -34,7 +34,9 @@ const Header = () => {
             <Nav.Link href="/users">User</Nav.Link>
             <Nav.Link href="/admins">Admin</Nav.Link> */}
           </Nav>
-
+          <button className="btn-login" onClick={() => handleLogin()}>
+            Log in
+          </button>
           <Nav>
             {isAuthenticated ? (
               <>
@@ -61,7 +63,6 @@ const Header = () => {
                 </button>
               </>
             )}
-            
           </Nav>
         </Navbar.Collapse>
       </Container>

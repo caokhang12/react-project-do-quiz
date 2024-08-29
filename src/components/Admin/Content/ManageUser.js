@@ -7,7 +7,7 @@ import ModalViewUser from "./ModalViewUser";
 import ModalDelUser from "./ModalDelUser";
 
 const ManageUser = () => {
-  const LIMIT_USER = 1;
+  const LIMIT_USER = 5;
   const [currentPage, setCurrentPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
   const [showModalAdd, setShowModalAdd] = useState(false);
