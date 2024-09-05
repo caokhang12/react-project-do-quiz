@@ -34,7 +34,7 @@ const DetailQuiz = () => {
           };
         })
         .value();
-        console.log(data)
+      console.log(data);
     }
   };
   return <div>detailQuiz</div>;

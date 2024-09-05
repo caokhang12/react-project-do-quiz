@@ -16,7 +16,6 @@ const Login = () => {
     setLoading(true);
     let data = await postLogin(email, password);
     if (data && data.EC === 0) {
-      console.log(data);
       dispatch(doLogin(data));
       toast.success(data.EM);
       navigate("/");
@@ -59,7 +58,7 @@ const Login = () => {
         <span className="forgot-password">Forgot password?</span>
         <div className="submit-button">
           {loading ? (
-            <button disabled="true">
+            <button disabled={true}>
               <VscLoading className="loading" /> <span>Loading...</span>
             </button>
           ) : (

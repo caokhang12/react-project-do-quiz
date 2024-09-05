@@ -9,6 +9,7 @@ import { Bounce, ToastContainer } from "react-toastify";
 import Register from "./components/Auth/Register.js";
 import LizQuiz from "./components/User/LizQuiz.js";
 import DetailQuiz from "./components/User/DetailQuiz.js";
+import Error from "./components/404/Error.js";
 const Layout = () => {
   return (
     <>
@@ -24,6 +25,7 @@ const Layout = () => {
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="*" element={<Error />} />
       </Routes>
 
       <ToastContainer

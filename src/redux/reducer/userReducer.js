@@ -11,8 +11,10 @@ const INITIAL_STATE = {
   isAuthenticated: false,
 };
 const userReducer = (state = INITIAL_STATE, action) => {
+  console.log(action);
   switch (action.type) {
     case FETH_USER_LOGIN_SUCCESS:
+      console.log(state);
       return {
         ...state,
         account: {
