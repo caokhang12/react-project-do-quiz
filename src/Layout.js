@@ -16,15 +16,15 @@ const Layout = () => {
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />} />
-          <Route path="/users" element={<LizQuiz />} />
-          <Route path="/quiz/:id" element={<DetailQuiz />} />
+          <Route path="users" element={<LizQuiz />} />
+          <Route path="quiz/:id" element={<DetailQuiz />} />
         </Route>
-        <Route path="/admins" element={<Admin />}>
+        <Route path="admins" element={<Admin />}>
           <Route path="manage-users" element={<ManageUser />} />
           <Route path="dashboard" element={<Dashboard />} />
         </Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
         <Route path="*" element={<Error />} />
       </Routes>
 
