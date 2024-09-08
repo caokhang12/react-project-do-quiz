@@ -9,6 +9,7 @@ const LizQuiz = () => {
   useEffect(() => {
     getQuiz();
   }, []);
+
   const getQuiz = async () => {
     const res = await getAllQuizByUser();
     console.log(res);

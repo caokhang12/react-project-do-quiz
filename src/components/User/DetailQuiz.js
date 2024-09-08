@@ -30,6 +30,7 @@ const DetailQuiz = () => {
               image = item.image;
               questionDes = item.description;
             }
+            item.answers.isSelected = false;
             answers.push(item.answers);
           });
           return {
@@ -51,29 +52,65 @@ const DetailQuiz = () => {
   const handleNext = () => {
     if (data && data.length > curQuestion + 1) setCurQuestion(curQuestion + 1);
   };
+  const handleFinish = () => {};
+
+  const handleCheckTick = (aId, qId) => {
+    let newData = _.cloneDeep(data);
+    let question = newData.find((item) => +item.id === +qId);
+    if (question && question.answers) {
+      let clickAn = question.answers.map((an) => {
+        if (+an.id === +aId) {
+          an.isSelected = !an.isSelected;
+        }
+        return an;
+      });
+
+      question.answers = clickAn;
+    }
+    const index = newData.findIndex((item) => +item.id === +qId);
+    if(index > -1){
+      newData[index] = question;
+      setData(newData);
+    }
+  };
   console.log(data, curQuestion);
 
   return (
-    <div>
+    <div className="detail-quiz-container">
       <div className="quiz-container ">
         <div className="left-content">
           <div className="title">
             Quiz {paramId} - {location.state.title}
           </div>
+          <hr />
           <div className="quiz-detail">
             <Question
+              handleCheckTick={handleCheckTick}
               index={curQuestion}
               data={data && data.length > 0 ? data[curQuestion] : []}
             />
           </div>
 
           <div className="footer">
-            <button className="btn btn-primary" onClick={() => handlePrev()}>
-              Prev
-            </button>
-            <button className="btn btn-primary" onClick={() => handleNext()}>
-              Next
-            </button>
+            {data && data.length > 0 && curQuestion === 0 ? (
+              <button className="btn btn-danger" onClick={() => handleFinish()}>
+                Finish
+              </button>
+            ) : (
+              <button className="btn btn-primary" onClick={() => handlePrev()}>
+                Prev
+              </button>
+            )}
+
+            {data && data.length > curQuestion + 1 ? (
+              <button className="btn btn-primary" onClick={() => handleNext()}>
+                Next
+              </button>
+            ) : (
+              <button className="btn btn-danger" onClick={() => handleFinish()}>
+                Finish
+              </button>
+            )}
           </div>
         </div>
         <div className="right-content">Question</div>

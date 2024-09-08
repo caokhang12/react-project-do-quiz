@@ -1,6 +1,10 @@
 import _ from "lodash";
 
-const Question = ({ index, data }) => {
+const Question = ({ index, data,handleCheckTick }) => {
+  const handleCheckbox = (e, aId,qId) => {
+    console.log('anId' + 'qId',e.target.checked, aId,qId);
+    handleCheckTick(aId,qId)
+  }
   if (_.isEmpty(data)) return <></>;
   return (
     <>
@@ -12,7 +16,6 @@ const Question = ({ index, data }) => {
           Question {index + 1}: {data.questionDes}
         </h5>
       </div>
-      <hr />
       <div className="answers">
         {data.answers.map((an, index) => {
           return (
@@ -20,11 +23,15 @@ const Question = ({ index, data }) => {
               <div className="form-check">
                 <input
                   className="form-check-input"
-                  value=""
+                  onChange = {(e) => handleCheckbox(e, an.id, data.id)}
+                  checked={an.isSelected}
                   type="checkbox"
                   id={`checkbox${index}`}
                 />
-                <label className="form-check-label" htmlFor={`checkbox${index}`}>
+                <label
+                  className="form-check-label"
+                  htmlFor={`checkbox${index}`}
+                >
                   {an.description}
                 </label>
               </div>
