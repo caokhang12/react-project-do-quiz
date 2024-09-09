@@ -2,7 +2,6 @@ import _ from "lodash";
 
 const Question = ({ index, data,handleCheckTick }) => {
   const handleCheckbox = (e, aId,qId) => {
-    console.log('anId' + 'qId',e.target.checked, aId,qId);
     handleCheckTick(aId,qId)
   }
   if (_.isEmpty(data)) return <></>;

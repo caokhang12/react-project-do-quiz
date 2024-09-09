@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { getQuizData } from "../../services/apiService";
+import { getQuizData, postQuizAnswers } from "../../services/apiService";
 import _ from "lodash";
 import "./DetailQuiz.scss";
 import Question from "./Question";
+import ModalResult from "./ModalResult";
 
 const DetailQuiz = () => {
+  const [showResult, setShowResult] = useState(false);
   const [data, setData] = useState([]);
+  const [dataResult, setDataResult] = useState({});
   const [curQuestion, setCurQuestion] = useState(0);
   const location = useLocation();
   const param = useParams();
@@ -52,7 +55,33 @@ const DetailQuiz = () => {
   const handleNext = () => {
     if (data && data.length > curQuestion + 1) setCurQuestion(curQuestion + 1);
   };
-  const handleFinish = () => {};
+  const handleFinish = async () => {
+    let payload = {
+      quizId: +paramId,
+      answers: [],
+    };
+    if (data && data.length > 0) {
+      payload.answers = data.map((item) => {
+        return {
+          questionId: +item.id,
+          userAnswerId: item.answers
+            .filter((answer) => answer.isSelected)
+            .map((answer) => answer.id),
+        };
+      });
+    }
+    console.log(payload);
+    let result = await postQuizAnswers(payload);
+    console.log(result);
+    if (result && result.EC === 0) {
+      setDataResult({
+        countCorrect: result.DT.countCorrect,
+        countTotal: result.DT.countTotal,
+        quizData: result.DT.quizData,
+      });
+      setShowResult(true);
+    }
+  };
 
   const handleCheckTick = (aId, qId) => {
     let newData = _.cloneDeep(data);
@@ -68,12 +97,11 @@ const DetailQuiz = () => {
       question.answers = clickAn;
     }
     const index = newData.findIndex((item) => +item.id === +qId);
-    if(index > -1){
+    if (index > -1) {
       newData[index] = question;
       setData(newData);
     }
   };
-  console.log(data, curQuestion);
 
   return (
     <div className="detail-quiz-container">
@@ -115,6 +143,8 @@ const DetailQuiz = () => {
         </div>
         <div className="right-content">Question</div>
       </div>
+
+      <ModalResult show={showResult} setShow={setShowResult} dataResult={dataResult}/>
     </div>
   );
 };
