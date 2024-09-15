@@ -10,6 +10,7 @@ import Register from "./components/Auth/Register.js";
 import LizQuiz from "./components/User/LizQuiz.js";
 import DetailQuiz from "./components/User/DetailQuiz.js";
 import Error from "./components/404/Error.js";
+import ManageQuiz from "./components/Admin/Content/Quiz/ManageQuiz.js";
 const Layout = () => {
   return (
     <>
@@ -22,6 +23,7 @@ const Layout = () => {
         <Route path="admins" element={<Admin />}>
           <Route path="manage-users" element={<ManageUser />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="manage-quizzes" element={<ManageQuiz />} />
         </Route>
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />

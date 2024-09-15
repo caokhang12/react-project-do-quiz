@@ -23,21 +23,32 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
       onToggle={handleToggleSidebar}
     >
       <SidebarHeader>
-        <div
-          style={{
-            padding: "24px",
-            textTransform: "uppercase",
-            fontWeight: "bold",
-            fontSize: 14,
-            letterSpacing: "1px",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
-        >
-          <DiReact size={"3em"} color="00bfff" />
-          ReactWeb
-        </div>
+        {collapsed ? (
+          <div
+            style={{
+              justifyContent: "center",
+              display: "flex",
+              padding: "24px",
+            }}
+          >
+            <DiReact size={"35px"} color="00bfff" />
+          </div>
+        ) : (
+          <div
+            style={{
+              gap: "10px",
+              padding: "24px",
+              textTransform: "uppercase",
+              fontWeight: "bold",
+              fontSize: 14,
+              letterSpacing: "1px",
+              whiteSpace: "nowrap",
+            }}
+          >
+            <DiReact size={"3em"} color="00bfff" />
+           <span style={{marginLeft: "10px", fontSize: "20px"}}>ReactWeb</span> 
+          </div>
+        )}
       </SidebarHeader>
 
       <SidebarContent>
@@ -53,7 +64,11 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
               Quản lý Người dùng
               <Link to="/admins/manage-users" />
             </MenuItem>
-            <MenuItem> Quản lý Bài Quiz</MenuItem>
+            <MenuItem>
+              {" "}
+              Quản lý Bài Quiz
+              <Link to="/admins/manage-quizzes" />
+            </MenuItem>
             <MenuItem> Quản lý Câu Hỏi</MenuItem>
           </SubMenu>
         </Menu>
