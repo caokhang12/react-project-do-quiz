@@ -16,6 +16,11 @@ import { Link } from "react-router-dom";
 const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
   return (
     <ProSidebar
+      rootStyles={{
+        position: "sticky",
+        top: 0,
+        height: "100vh",
+      }}
       image={sidebarBg}
       collapsed={collapsed}
       toggled={toggled}
@@ -26,6 +31,7 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
         {collapsed ? (
           <div
             style={{
+              alignItems: "center",
               justifyContent: "center",
               display: "flex",
               padding: "24px",
@@ -46,7 +52,9 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
             }}
           >
             <DiReact size={"3em"} color="00bfff" />
-           <span style={{marginLeft: "10px", fontSize: "20px"}}>ReactWeb</span> 
+            <span style={{ marginLeft: "10px", fontSize: "20px" }}>
+              ReactWeb
+            </span>
           </div>
         )}
       </SidebarHeader>

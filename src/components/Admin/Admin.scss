@@ -1,6 +1,8 @@
 .admin-container {
   display: flex;
+  height: 1000cm;
   .admin-sidebar {
+    position: fixed;
     height: 100vh;
     .sidebar-btn-wrapper {
       display: flex;
@@ -26,13 +28,16 @@
           font-size: 13px;
         }
         &:hover {
-          color:#dee2ec;
+          color: #dee2ec;
         }
       }
+    }
   }
-}
-.admin-content {
-  .admin-header{}
-  .admin-main{}
-}
+  .admin-content {
+    margin-left: 270px;
+    .admin-header {
+    }
+    .admin-main {
+    }
+  }
 }
