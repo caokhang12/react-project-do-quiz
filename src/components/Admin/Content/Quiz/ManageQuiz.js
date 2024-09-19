@@ -11,10 +11,16 @@ import {
 import Accordion from "react-bootstrap/Accordion";
 import Select from "react-select";
 import {
+  delQuiz,
   getAllQuizByAdmin,
   postNewQuiz,
+  updateQuiz,
 } from "../../../../services/apiService";
 import { toast } from "react-toastify";
+import _ from "lodash";
+import Modal from "react-bootstrap/Modal";
+import { FiPlusCircle } from "react-icons/fi";
+
 const ManageQuiz = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -22,6 +28,9 @@ const ManageQuiz = () => {
   const [image, setImage] = useState("");
   const [preview, setPreview] = useState("");
   const [listQuiz, setListQuiz] = useState([]);
+  const [showUpdModal, setShowUpdModal] = useState(false);
+  const [showDelModal, setShowDelModal] = useState(false);
+  const [quiz, setQuiz] = useState({});
   const options = [
     { value: "EASY", label: "EASY" },
     { value: "MEDIUM", label: "MEDIUM" },
@@ -30,7 +39,14 @@ const ManageQuiz = () => {
 
   useEffect(() => {
     fetchAllQuiz();
-  }, []);
+    if (!_.isEmpty(quiz)) {
+      setName(quiz.name);
+      setDescription(quiz.description);
+      setType(quiz.type);
+      setImage("");
+      if (quiz.image) setPreview(`data:image/jpeg;base64,${quiz.image}`);
+    }
+  }, [quiz]);
   const fetchAllQuiz = async () => {
     let data = await getAllQuizByAdmin();
     if (data && data.EC === 0) {
@@ -47,7 +63,7 @@ const ManageQuiz = () => {
       setPreview(URL.createObjectURL(e.target.files[0]));
     }
   };
-  const handleSubmit = async () => {
+  const handleSubmitNewQuiz = async () => {
     if (!name || !description) {
       toast.error("Please fill in all fields");
       return;
@@ -64,10 +80,48 @@ const ManageQuiz = () => {
       toast.error(data.EM);
     }
   };
+  const handleBtnDel = (quiz) => {
+    setShowDelModal(true);
+    setQuiz(quiz);
+  };
 
-  const handleBtnDel = (quiz) => {};
+  const handleConfirmDel = async () => {
+    //Gửi data
+    let data = await delQuiz(quiz.id);
+    if (data && data.EC === 0) {
+      toast.success(data.EM);
+      setShowDelModal();
+      await fetchAllQuiz();
+      //setCurrentPage(1);
+    }
+    if (data && data.EC !== 0) {
+      toast.error(data.EM);
+    }
+  };
 
-  const handleBtnUpdate = (quiz) => {};
+  const handleBtnUpdate = (quiz) => {
+    setShowUpdModal(true);
+    setQuiz(quiz);
+  };
+  const handleUpImg = (e) => {
+    if (e.target && e.target.files && e.target.files[0]) {
+      setImage(e.target.files[0]);
+      setPreview(URL.createObjectURL(e.target.files[0]));
+    }
+  };
+
+  const handleSubmitUpd = async () => {
+    //Gửi data
+    let data = await updateQuiz(quiz.id, description, name, type.value, image);
+    if (data && data.EC === 0) {
+      toast.success(data.EM);
+      setShowUpdModal(false);
+      await fetchAllQuiz();
+    }
+    if (data && data.EC !== 0) {
+      toast.error(data.EM);
+    }
+  };
   return (
     <div className="manage-quiz-container">
       <div className="add-quiz">
@@ -78,7 +132,7 @@ const ManageQuiz = () => {
               <Container className="w-75">
                 <Row className="justify-content-center">
                   <Col md={6}>
-                    <h2 className="text-center mb-4"></h2>
+                    {/* <h2 className="text-center mb-4"></h2> */}
                     {/* Name */}
                     <FloatingLabel label="Quiz Name" className="mb-3">
                       <Form.Control
@@ -138,7 +192,7 @@ const ManageQuiz = () => {
                     <Button
                       variant="primary"
                       className="w-100"
-                      onClick={(e) => handleSubmit()}
+                      onClick={(e) => handleSubmitNewQuiz()}
                     >
                       Add Quiz
                     </Button>
@@ -196,6 +250,99 @@ const ManageQuiz = () => {
           </tbody>
         </table>
       </div>
+      <Modal show={showDelModal} onHide={setShowDelModal} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Xác nhận xóa người dùng</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Bạn có chắc chắn muốn xóa bài quiz
+          <b> {quiz.name}</b>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowDelModal(false)}>
+            Hủy
+          </Button>
+          <Button variant="primary" onClick={() => handleConfirmDel()}>
+            Xác nhận
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={showUpdModal}
+        onHide={setShowUpdModal}
+        centered
+        size="lg"
+        backdrop="static"
+        className="modal-add-user"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Cập nhật bài quiz</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Row className="mb-3">
+              <Form.Group as={Col}>
+                <Form.Label>Miêu tả</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Nhập email"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </Form.Group>
+
+              <Form.Group as={Col}>
+                <Form.Label>Tên bài quiz</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </Form.Group>
+            </Row>
+
+            <Row className="mb-3">
+              <Form.Group as={Col}>
+                <Form.Label>Độ khó</Form.Label>
+                <Select
+                  options={options}
+                  value={type}
+                  onChange={setType}
+                ></Select>
+              </Form.Group>
+            </Row>
+
+            <Form.Group className="mb-6 input-label ">
+              <Form.Label
+                className="btn btn-outline-secondary"
+                htmlFor="formFile"
+              >
+                <FiPlusCircle />
+                Tải ảnh
+              </Form.Label>
+              <Form.Control
+                type="file"
+                hidden
+                id="formFile"
+                onChange={(e) => handleUpImg(e)}
+              />
+            </Form.Group>
+            {preview ? (
+              <Form.Group className="img-preview">
+                <Image src={preview} alt="preview" />
+              </Form.Group>
+            ) : null}
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowUpdModal(false)}>
+            Hủy
+          </Button>
+          <Button variant="primary" onClick={() => handleSubmitUpd()}>
+            Lưu
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
