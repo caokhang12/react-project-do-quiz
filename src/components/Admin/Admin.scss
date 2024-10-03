@@ -2,10 +2,11 @@
   display: flex;
   height: 1000cm;
   .admin-sidebar {
-    position: fixed;
+    position: sticky;
     height: 100vh;
+    top: 0;
     .sidebar-btn-wrapper {
-      display: flex;
+      display: stickey;
       align-items: center;
       justify-content: center;
       .sidebar-btn {
@@ -34,7 +35,6 @@
     }
   }
   .admin-content {
-    margin-left: 270px;
     .admin-header {
     }
     .admin-main {

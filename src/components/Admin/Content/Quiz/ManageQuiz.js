@@ -24,7 +24,7 @@ import { FiPlusCircle } from "react-icons/fi";
 const ManageQuiz = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [type, setType] = useState("");
+  const [type, setType] = useState("EASY");
   const [image, setImage] = useState("");
   const [preview, setPreview] = useState("");
   const [listQuiz, setListQuiz] = useState([]);
@@ -61,6 +61,9 @@ const ManageQuiz = () => {
     if (e.target && e.target.files && e.target.files[0]) {
       setImage(e.target.files[0]);
       setPreview(URL.createObjectURL(e.target.files[0]));
+      console.log(image);
+      console.log(e.target.files[0]);
+      console.log(preview);
     }
   };
   const handleSubmitNewQuiz = async () => {
@@ -75,6 +78,8 @@ const ManageQuiz = () => {
       setDescription("");
       setType("");
       setImage("");
+      setPreview("");
+      await fetchAllQuiz();
     }
     if (data && data.EC !== 0) {
       toast.error(data.EM);
@@ -103,12 +108,6 @@ const ManageQuiz = () => {
     setShowUpdModal(true);
     setQuiz(quiz);
   };
-  const handleUpImg = (e) => {
-    if (e.target && e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
-      setPreview(URL.createObjectURL(e.target.files[0]));
-    }
-  };
 
   const handleSubmitUpd = async () => {
     //Gửi data
@@ -116,6 +115,11 @@ const ManageQuiz = () => {
     if (data && data.EC === 0) {
       toast.success(data.EM);
       setShowUpdModal(false);
+      setName("");
+      setDescription("");
+      setType("");
+      setImage("");
+      setPreview("");
       await fetchAllQuiz();
     }
     if (data && data.EC !== 0) {
@@ -137,7 +141,7 @@ const ManageQuiz = () => {
                     <FloatingLabel label="Quiz Name" className="mb-3">
                       <Form.Control
                         type="text"
-                        placeholder=""
+                        placeholder="EASY"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                       />
@@ -168,26 +172,34 @@ const ManageQuiz = () => {
                     </Form.Group>
 
                     {/* Upload Image */}
-                    <Form.Group className="mb-3 d-flex">
-                      <Form.Label className="btn " htmlFor="formFile">
-                        Upload Image
-                      </Form.Label>
+                    <Row className="mb-3">
+                      <Form.Group as={Col} className="mb-3 ">
+                        <Form.Label
+                          className="btn btn-primary"
+                          htmlFor="formFile"
+                        >
+                          Upload Image
+                        </Form.Label>
 
-                      <Form.Control
-                        type="file"
-                        hidden
-                        id="formFile"
-                        onChange={(e) => handleSetImage(e)}
-                      />
-                      {preview ? (
-                        <Image
-                          src={preview}
-                          alt="preview"
-                          className="w-25 rounded float-right img-thumbnail"
+                        <Form.Control
+                          type="file"
+                          hidden
+                          id="formFile"
+                          onChange={(e) => handleSetImage(e)}
                         />
-                      ) : null}
-                    </Form.Group>
-
+                      </Form.Group>
+                    </Row>
+                    <Row className="mb-3">
+                      <Form.Group as={Col} className="d-flex">
+                        {preview ? (
+                          <Image
+                            src={preview}
+                            alt="preview"
+                            className="w-25 rounded float-right img-thumbnail"
+                          />
+                        ) : null}
+                      </Form.Group>
+                    </Row>
                     {/* Submit Button */}
                     <Button
                       variant="primary"
@@ -211,6 +223,7 @@ const ManageQuiz = () => {
               <th scope="col">Tên bài quiz</th>
               <th scope="col">Miêu tả</th>
               <th scope="col">Độ khó</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -324,7 +337,7 @@ const ManageQuiz = () => {
                 type="file"
                 hidden
                 id="formFile"
-                onChange={(e) => handleUpImg(e)}
+                onChange={(e) => handleSetImage(e)}
               />
             </Form.Group>
             {preview ? (

@@ -16,11 +16,6 @@ import { Link } from "react-router-dom";
 const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
   return (
     <ProSidebar
-      rootStyles={{
-        position: "sticky",
-        top: 0,
-        height: "100vh",
-      }}
       image={sidebarBg}
       collapsed={collapsed}
       toggled={toggled}
@@ -77,7 +72,11 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
               Quản lý Bài Quiz
               <Link to="/admins/manage-quizzes" />
             </MenuItem>
-            <MenuItem> Quản lý Câu Hỏi</MenuItem>
+            <MenuItem>
+              {" "}
+              Quản lý Câu Hỏi
+              <Link to="/admins/manage-questions" />
+            </MenuItem>
           </SubMenu>
         </Menu>
       </SidebarContent>
