@@ -3,18 +3,19 @@ import { BsPatchMinusFill } from "react-icons/bs";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { AiFillPlusSquare } from "react-icons/ai";
 import { RiImageAddFill } from "react-icons/ri";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Select from "react-select";
 import "./Question.scss";
 import _ from "lodash";
+import {
+  getAllQuizByAdmin,
+  postNewAnswer,
+  postNewQuestion,
+} from "../../../../services/apiService";
 const ManageQuestion = () => {
-  const options = [
-    { value: "EASY", label: "EASY" },
-    { value: "MEDIUM", label: "MEDIUM" },
-    { value: "HARD", label: "HARD" },
-  ];
   const [selectedQuiz, setSelectedQuiz] = useState({});
+  const [listQuiz, setListQuiz] = useState({});
   const [questions, setQuestion] = useState([
     {
       id: uuidv4(),
@@ -30,6 +31,19 @@ const ManageQuestion = () => {
       ],
     },
   ]);
+
+  useEffect(() => {
+    fetchAllQuiz();
+  }, []);
+  const fetchAllQuiz = async () => {
+    let data = await getAllQuizByAdmin();
+    if (data && data.EC === 0) {
+      let newData = data.DT.map((item) => {
+        return { value: item.id, label: item.description };
+      });
+      setListQuiz(newData);
+    }
+  };
 
   const handleAddRevQuestion = (type, id) => {
     if (type === "ADD") {
@@ -79,6 +93,71 @@ const ManageQuestion = () => {
       setQuestion([...questionsClone]);
     }
   };
+
+  const handleOnChange = (type, id, value) => {
+    if (type === "QUESTION") {
+      let questionsClone = _.cloneDeep(questions);
+      let index = questionsClone.findIndex((question) => question.id === id);
+      if (index > -1) {
+        questionsClone[index].description = value;
+        setQuestion(questionsClone);
+      }
+    }
+  };
+
+  const handleOnChangeAnswer = (type, answerId, questionId, value) => {
+    let questionsClone = _.cloneDeep(questions);
+    console.log(type, answerId, questionId, value);
+    let index = questionsClone.findIndex(
+      (question) => question.id === questionId
+    );
+    if (index > -1) {
+      questionsClone[index].answers = questionsClone[index].answers.map(
+        (answer) => {
+          if (answer.id === answerId) {
+            if (type === "DESCRIPTION") {
+              answer.description = value;
+            }
+            if (type === "CHECKBOX") {
+              answer.isCorrect = value;
+            }
+          }
+          return answer;
+        }
+      );
+      setQuestion(questionsClone);
+    }
+  };
+  const handleOnChangeImage = (id, e) => {
+    let questionsClone = _.cloneDeep(questions);
+    let index = questionsClone.findIndex((question) => question.id === id);
+    if (index > -1 && e.target && e.target.files && e.target.files[0]) {
+      questionsClone[index].imageFile = e.target.files[0];
+      questionsClone[index].imageName = e.target.files[0].name;
+      setQuestion(questionsClone);
+    }
+  };
+
+  const handleOnSubmit = async () => {
+    await Promise.all(
+      questions.map(async (question) => {
+        const ques = await postNewQuestion(
+          +selectedQuiz.value,
+          question.description,
+          question.imageFile
+        );
+        await Promise.all(
+          question.answers.map(async (answer) => {
+            await postNewAnswer(
+              answer.description,
+              answer.isCorrect,
+              ques.DT.id
+            );
+          })
+        );
+      })
+    );
+  };
   return (
     <div>
       <div className="manage-question-container">
@@ -90,7 +169,7 @@ const ManageQuestion = () => {
             <Select
               defaultValue={selectedQuiz}
               onChange={setSelectedQuiz}
-              options={options}
+              options={listQuiz}
             />
           </div>
           {questions &&
@@ -109,18 +188,31 @@ const ManageQuestion = () => {
                           className="form-control"
                           placeholder=""
                           value={question.description}
-                          onChange={(e) => {
-                            question.description = e.target.value;
-                          }}
+                          onChange={(e) =>
+                            handleOnChange(
+                              "QUESTION",
+                              question.id,
+                              e.target.value
+                            )
+                          }
                         />
                         <label>Description</label>
                       </div>
                       <div className="group-upload">
-                        <label>
+                        <label htmlFor={question.id}>
                           <RiImageAddFill className="label-up" />
                         </label>
-                        <input type="file" hidden />
-                        <span>0 file is uploaded</span>
+                        <input
+                          type="file"
+                          hidden
+                          id={question.id}
+                          onChange={(e) => handleOnChangeImage(question.id, e)}
+                        />
+                        <span>
+                          {question.imageName
+                            ? question.imageName
+                            : "0 file was uploaded"}
+                        </span>
                       </div>
                       <div className="btn-add">
                         <span>
@@ -149,16 +241,30 @@ const ManageQuestion = () => {
                             <input
                               type="checkbox"
                               className="form-check-input iscorrect"
+                              checked={answer.isCorrect}
+                              onChange={(e) =>
+                                handleOnChangeAnswer(
+                                  "CHECKBOX",
+                                  answer.id,
+                                  question.id,
+                                  e.target.checked
+                                )
+                              }
                             />
                             <div className="form-floating answer-name">
                               <input
-                                type="text"
+                                type="type"
                                 className="form-control"
                                 placeholder="Answer"
                                 value={answer.description}
-                                onChange={(e) => {
-                                  answer.description = e.target.value;
-                                }}
+                                onChange={(e) =>
+                                  handleOnChangeAnswer(
+                                    "DESCRIPTION",
+                                    answer.id,
+                                    question.id,
+                                    e.target.value
+                                  )
+                                }
                               />
                               <label>Answer {index + 1}</label>
                             </div>
@@ -193,6 +299,11 @@ const ManageQuestion = () => {
                 </div>
               );
             })}
+        </div>
+        <div className="btn-submit">
+          <button className="btn btn-primary" onClick={() => handleOnSubmit()}>
+            Save question
+          </button>
         </div>
       </div>
     </div>
