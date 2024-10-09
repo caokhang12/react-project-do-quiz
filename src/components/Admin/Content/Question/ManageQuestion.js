@@ -13,24 +13,26 @@ import {
   postNewAnswer,
   postNewQuestion,
 } from "../../../../services/apiService";
+import { toast } from "react-toastify";
 const ManageQuestion = () => {
-  const [selectedQuiz, setSelectedQuiz] = useState({});
-  const [listQuiz, setListQuiz] = useState({});
-  const [questions, setQuestion] = useState([
+  const initQuestion = [
     {
       id: uuidv4(),
-      description: "question 1",
+      description: "",
       imageFile: "",
       imageName: "",
       answers: [
         {
           id: uuidv4(),
-          description: "answer 1",
+          description: "",
           isCorrect: false,
         },
       ],
     },
-  ]);
+  ];
+  const [selectedQuiz, setSelectedQuiz] = useState({});
+  const [listQuiz, setListQuiz] = useState({});
+  const [questions, setQuestion] = useState(initQuestion);
 
   useEffect(() => {
     fetchAllQuiz();
@@ -107,7 +109,6 @@ const ManageQuestion = () => {
 
   const handleOnChangeAnswer = (type, answerId, questionId, value) => {
     let questionsClone = _.cloneDeep(questions);
-    console.log(type, answerId, questionId, value);
     let index = questionsClone.findIndex(
       (question) => question.id === questionId
     );
@@ -139,24 +140,40 @@ const ManageQuestion = () => {
   };
 
   const handleOnSubmit = async () => {
-    await Promise.all(
-      questions.map(async (question) => {
-        const ques = await postNewQuestion(
-          +selectedQuiz.value,
-          question.description,
-          question.imageFile
-        );
-        await Promise.all(
-          question.answers.map(async (answer) => {
-            await postNewAnswer(
-              answer.description,
-              answer.isCorrect,
-              ques.DT.id
-            );
-          })
-        );
-      })
-    );
+    if (_.isEmpty(selectedQuiz)) {
+      toast.error("Vui lòng chọn Quiz!");
+      return;
+    }
+
+    for (let i = 0; i < questions.length; i++) {
+      if (_.isEmpty(questions[i].description)) {
+        toast.error("Vui lòng nhập câu hỏi!");
+        return;
+      }
+    }
+
+    for (let i = 0; i < questions.length; i++) {
+      for (let j = 0; j < questions[i].answers.length; j++) {
+        if (_.isEmpty(questions[i].answers[j].description)) {
+          toast.error("Vui lòng nhập đáp án!");
+          return;
+        }
+      }
+    }
+
+    for (const question of questions) {
+      const ques = await postNewQuestion(
+        selectedQuiz.value,
+        question.description,
+        question.imageFile
+      );
+      for (const answer of question.answers) {
+        await postNewAnswer(answer.description, answer.isCorrect, ques.DT.id);
+      }
+    }
+    toast.success("Thêm câu hỏi thành công!");
+    setQuestion(initQuestion);
+    setSelectedQuiz();
   };
   return (
     <div>
