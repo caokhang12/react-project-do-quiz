@@ -18,7 +18,7 @@ const LizQuiz = () => {
     }
   };
   return (
-    <div className="quiz-container d-inline-flex">
+    <div className="quiz-container d-inline-flex flex-wrap justify-content-center ">
       {arrQuiz &&
         arrQuiz.length > 0 &&
         arrQuiz.map((item, index) => {
@@ -27,7 +27,7 @@ const LizQuiz = () => {
               key={`quiz-${item.id}`}
               className="col-lg-4 d-flex align-items-stretch"
             >
-              <div className="card" style={{ width: "18rem" }}>
+              <div className="card my-4" style={{ width: "18rem" }}>
                 <img
                   className="card-img-top"
                   src={`data:image/jpeg;base64, ${item.image}`}

@@ -15,8 +15,9 @@ import {
   postNewQuiz,
 } from "../../../../services/apiService";
 import { toast } from "react-toastify";
-
 import TableQuiz from "./TableQuiz";
+import QuizQA from "./QuizQA";
+import AssignQuiz from "./AssignQuiz";
 
 const ManageQuiz = () => {
   const [name, setName] = useState("");
@@ -80,8 +81,6 @@ const ManageQuiz = () => {
               <Container className="w-75">
                 <Row className="justify-content-center">
                   <Col md={6}>
-                    {/* <h2 className="text-center mb-4"></h2> */}
-                    {/* Name */}
                     <FloatingLabel label="Quiz Name" className="mb-3">
                       <Form.Control
                         type="text"
@@ -134,7 +133,7 @@ const ManageQuiz = () => {
                       </Form.Group>
                     </Row>
                     <Row className="mb-3">
-                      <Form.Group as={Col} className="d-flex">
+                      <Form.Group as={Col} className="d-inline-flex ">
                         {preview ? (
                           <Image
                             src={preview}
@@ -155,12 +154,26 @@ const ManageQuiz = () => {
                   </Col>
                 </Row>
               </Container>
+              <div className="quiz-table">
+                <TableQuiz listQuiz={listQuiz} fetchQuiz={fetchQuiz} />
+              </div>
+            </Accordion.Body>
+          </Accordion.Item>
+          <Accordion.Item eventKey="1">
+            <Accordion.Header>Update Q/A</Accordion.Header>
+            <Accordion.Body>
+              <div className="update-quiz">
+                <QuizQA />
+              </div>
+            </Accordion.Body>
+          </Accordion.Item>
+          <Accordion.Item eventKey="2">
+            <Accordion.Header>Asign to user</Accordion.Header>
+            <Accordion.Body>
+              <AssignQuiz />
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
-      </div>
-      <div className="quiz-table">
-        <TableQuiz listQuiz={listQuiz} fetchQuiz={fetchQuiz} />
       </div>
     </div>
   );
