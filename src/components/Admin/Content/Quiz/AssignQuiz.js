@@ -37,6 +37,7 @@ const AssignQuiz = () => {
 
   const handleAsign = async () => {
     let data = await postAssignQuiz(selectedQuiz.value, selectedUser.value);
+    console.log('qValue', selectedQuiz.value, 'uValue', selectedUser.value);
     if (data && data.EC === 0) {
       toast.success(data.EM);
     }

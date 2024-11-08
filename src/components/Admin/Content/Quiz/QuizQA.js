@@ -11,8 +11,7 @@ import _ from "lodash";
 import {
   getAllQuizByAdmin,
   getQuizWithQA,
-  postNewAnswer,
-  postNewQuestion,
+  postUpsertQA,
 } from "../../../../services/apiService";
 import { toast } from "react-toastify";
 import { Image } from "react-bootstrap";
@@ -42,24 +41,21 @@ const QuizQA = () => {
   useEffect(() => {
     if (selectedQuiz && selectedQuiz.value) {
       fetchQuizWithQA();
+      console.log(questions);
     }
   }, [selectedQuiz]);
 
   const fetchQuizWithQA = async () => {
     let res = await getQuizWithQA(selectedQuiz.value);
     if (res && res.EC === 0) {
-      // for (let i = 0; i < res.DT.qa.length; i++) {
-      //   console.log("file", res.DT.qa[i].imageFile);
-      // }
       setQuestion(res.DT.qa);
-      console.log(questions);
     }
   };
   const fetchAllQuiz = async () => {
     let data = await getAllQuizByAdmin();
     if (data && data.EC === 0) {
       let newData = data.DT.map((item) => {
-        return { value: item.id, label: item.description };
+        return { value: item.id, label: `${item.id} - ${item.name}` };
       });
       setListQuiz(newData);
     }
@@ -101,7 +97,7 @@ const QuizQA = () => {
         (question) => question.id === questionId
       );
       questionsClone[index].answers.push(newAn);
-      setQuestion([...questionsClone]);
+      setQuestion(questionsClone);
     }
     if (type === "REV") {
       let index = questionsClone.findIndex(
@@ -110,7 +106,7 @@ const QuizQA = () => {
       questionsClone[index].answers = questionsClone[index].answers.filter(
         (an) => an.id !== id
       );
-      setQuestion([...questionsClone]);
+      setQuestion(questionsClone);
     }
   };
 
@@ -154,10 +150,12 @@ const QuizQA = () => {
       questionsClone[index].imageFile = e.target.files[0];
       questionsClone[index].imageName = e.target.files[0].name;
       setQuestion(questionsClone);
+      console.log(typeof questionsClone[index].imageFile);
     }
   };
 
   const handleOnSubmit = async () => {
+    console.log(selectedQuiz.value);
     if (_.isEmpty(selectedQuiz)) {
       toast.error("Vui lòng chọn Quiz!");
       return;
@@ -178,21 +176,43 @@ const QuizQA = () => {
         }
       }
     }
-
-    for (const question of questions) {
-      const ques = await postNewQuestion(
-        selectedQuiz.value,
-        question.description,
-        question.imageFile
-      );
-      for (const answer of question.answers) {
-        await postNewAnswer(answer.description, answer.isCorrect, ques.DT.id);
+    let questionClone = _.cloneDeep(questions);
+    for (let i = 0; i < questionClone.length; i++) {
+      if (questionClone[i].imageFile) {
+        if (typeof questionClone[i].imageFile === "object") {
+          questionClone[i].imageFile = await toBase64(
+            questionClone[i].imageFile
+          );
+        }
+        else {
+          questionClone[i].imageFile = `data:image;base64,${questionClone[i].imageFile}`;
+        }
       }
     }
-    toast.success("Thêm câu hỏi thành công!");
-    setQuestion(initQuestion);
-    setSelectedQuiz();
+    let res = await postUpsertQA({
+      quizId: selectedQuiz.value,
+      questions: questionClone,
+    });
+    console.log(res);
+    console.log(questions);
+    if (res && res.EC === 0) {
+      toast.success("Cập nhật câu hỏi thành công!");
+      setQuestion(initQuestion);
+      setSelectedQuiz({});
+      fetchAllQuiz();
+      return;
+    } else {
+      toast.error("Cập nhật câu hỏi thất bại!");
+    }
   };
+
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
   return (
     <div>
       <div className="manage-question-container">
@@ -261,7 +281,7 @@ const QuizQA = () => {
                         />
                         {question.imageFile ? (
                           <Image
-                            src={`data:image/jpeg;base64, ${question.imageFile}`}
+                            src={`data:image;base64,${question.imageFile}`}
                             alt="preview"
                             className="rounded d-flex image"
                           />
@@ -269,7 +289,6 @@ const QuizQA = () => {
                           // <span>{question.imageName}</span>
                           <span>0 file was uploaded</span>
                         )}
-                        <div>{question.imageName}</div>
                       </div>
                     </div>
                     {question.answers &&
@@ -344,7 +363,7 @@ const QuizQA = () => {
             className="btn btn-primary mt-3"
             onClick={() => handleOnSubmit()}
           >
-            Save question
+            Submit question
           </button>
         </div>
       </div>

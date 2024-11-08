@@ -83,7 +83,7 @@ const ManageQuestion = () => {
         (question) => question.id === questionId
       );
       questionsClone[index].answers.push(newAn);
-      setQuestion([...questionsClone]);
+      setQuestion(questionsClone);
     }
     if (type === "REV") {
       let index = questionsClone.findIndex(
@@ -92,7 +92,7 @@ const ManageQuestion = () => {
       questionsClone[index].answers = questionsClone[index].answers.filter(
         (an) => an.id !== id
       );
-      setQuestion([...questionsClone]);
+      setQuestion(questionsClone);
     }
   };
 
@@ -172,6 +172,7 @@ const ManageQuestion = () => {
       }
     }
     toast.success("Thêm câu hỏi thành công!");
+    console.log(questions)
     setQuestion(initQuestion);
     setSelectedQuiz();
   };
